@@ -1,0 +1,25 @@
+# Docker volumes et données
+docker/postgres/data/
+docker/minio/data/
+docker/logs/
+docker/dags/__pycache__/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.egg-info/
+.venv/
+venv/
+
+# Environment variables
+.env
+
+# DBT
+banking_dbt/target/
+banking_dbt/dbt_packages/
+banking_dbt/logs/
+
+# IDE
+.vscode/
+.idea/
