@@ -61,6 +61,7 @@ services:
       postgres -c wal_level=logical
               -c max_wal_senders=10
               -c max_replication_slots=10
+              -c max_connections=200
                
   minio:
     image: minio/minio:latest
@@ -127,6 +128,22 @@ services:
       - airflow_postgres_data:/var/lib/postgresql/data
     ports:
       - "5433:5432"  # separate from banking-postgres to avoid conflict
+  data-generator:
+    image: python:3.11-slim
+    container_name: data-generator
+    volumes:
+      - ./data-generator:/app
+    working_dir: /app
+    command: bash -c "pip install faker psycopg2-binary sqlalchemy && python fake_generator.py"
+    depends_on:
+      - postgres
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: banking
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+
 
 volumes:
   airflow_postgres_data:
